@@ -1,1 +1,4 @@
 .env
+iocs.txt
+*.swp
+*.swp.*

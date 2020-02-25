@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "otx-scripts"
+name = "ip-to-ioc"
 version = "0.1.0"
 description = ""
 authors = ["ranguli <hello@joshmurphy.ca>"]
@@ -7,6 +7,10 @@ authors = ["ranguli <hello@joshmurphy.ca>"]
 [tool.poetry.dependencies]
 python = "^3.6"
 OTXv2 = "^1.5.7"
+click = "^7.0"
+python-decouple = "^3.3"
+virustotal-api = "^1.1.11"
+black = "^19.10b0"
 
 [tool.poetry.dev-dependencies]
 
