@@ -11,6 +11,8 @@ click = "^7.0"
 python-decouple = "^3.3"
 virustotal-api = "^1.1.11"
 black = "^19.10b0"
+maltiverse = {git = "https://github.com/maltiverse/python-maltiverse"}
+jwt = "^0.6.1"
 
 [tool.poetry.dev-dependencies]
 
