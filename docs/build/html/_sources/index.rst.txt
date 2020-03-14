@@ -6,6 +6,12 @@
 Welcome to iocutils's documentation!
 ====================================
 
+.. automodule:: main
+    :members:
+
+.. automodule:: lib
+    :members:
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

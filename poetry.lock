@@ -115,19 +115,6 @@ cryptography = ">=2.2.2,<3"
 
 [[package]]
 category = "main"
-description = ""
-name = "maltiverse"
-optional = false
-python-versions = "*"
-version = "0.7.7"
-
-[package.source]
-reference = "384ae3eb466e29d3459ade466f464141096e5d8c"
-type = "git"
-url = "https://github.com/maltiverse/python-maltiverse"
-
-[[package]]
-category = "main"
 description = "AlienVault OTX API"
 name = "otxv2"
 optional = false
@@ -245,19 +232,8 @@ brotli = ["brotlipy (>=0.6.0)"]
 secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
 socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
 
-[[package]]
-category = "main"
-description = "Virus Total Public/Private/Intel API"
-name = "virustotal-api"
-optional = false
-python-versions = "*"
-version = "1.1.11"
-
-[package.dependencies]
-requests = ">=2.22.0"
-
 [metadata]
-content-hash = "72e3df870da293afca7dbcbf0ff8f73800484c5baee6dc91aae904820cba2641"
+content-hash = "fcbb0ccaf309009f7b5ecb7c63a5580a00c57ca8765ce02d3df7ed1010588899"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -345,7 +321,6 @@ idna = [
 jwt = [
     {file = "jwt-0.6.1-py3-none-any.whl", hash = "sha256:f78e4c06370b23c643ad66192c80c0b36d4b1e8e2d6458f177a3962c90ee74d5"},
 ]
-maltiverse = []
 otxv2 = [
     {file = "OTXv2-1.5.7-py3-none-any.whl", hash = "sha256:62ae8f51c1967c3ff14250435e00b081c4c9c432f4d6369cabadd724c3e8e660"},
     {file = "OTXv2-1.5.7.tar.gz", hash = "sha256:5a2656fa66d840b2c47847b26ca85df48aa5a39a752fd76f68b4ada4a7de9a0d"},
@@ -430,8 +405,4 @@ typed-ast = [
 urllib3 = [
     {file = "urllib3-1.25.8-py2.py3-none-any.whl", hash = "sha256:2f3db8b19923a873b3e5256dc9c2dedfa883e33d87c690d9c7913e1f40673cdc"},
     {file = "urllib3-1.25.8.tar.gz", hash = "sha256:87716c2d2a7121198ebcb7ce7cccf6ce5e9ba539041cfbaeecfb641dc0bf6acc"},
-]
-virustotal-api = [
-    {file = "virustotal-api-1.1.11.tar.gz", hash = "sha256:9f1d783a848e928a78aa168372645c6899cbbd6b888951e1d6335e5b87de1c3d"},
-    {file = "virustotal_api-1.1.11-py2.py3-none-any.whl", hash = "sha256:d238603aafa9d6229394f4df26fb076eb0f5ddf4b60672cf0fd1b7f2608a8b29"},
 ]
