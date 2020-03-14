@@ -1,65 +1,70 @@
+from typing import Union
+import io
+import ipaddress
+import re
+
 from OTXv2 import OTXv2
 from OTXv2 import IndicatorTypes
 from decouple import config
-import click
 
 OTX_API_KEY = config("OTX_API_KEY")
 otx = OTXv2(OTX_API_KEY)
 
-indicators = []
-seen = []
-urls = []
-domains = []
-
 
 indicator_types_lookup = { valid_type.name:valid_type for (valid_type) in IndicatorTypes.all_types }
 
-@click.command()
-@click.option("-i", "--indicator", required=True, help="The indicator you more details on.")
-@click.option('-t', "--type", "indicator_type", required = True, type=click.Choice(indicator_types_lookup.keys(), case_sensitive=False), help="The type of your indicator")
-@click.option("--publish", "publish", flag_value="publish", default=False)
-@click.option("--pulse")
-@click.option("-o", "--out", required=True)
-def main(indicator, indicator_type, publish, pulse, out):
-
-    results = get_indicator(indicator, indicator_type)
-
-    if pulse:
-        # Check the IOC to see if its already in a lot of pulses
-        unique_iocs = get_unique_indicators(results)
-        print(f"Uploading IOCs to OTX Pulse {pulse}.")
-        otx.add_pulse_indicators(pulse_id=pulse, new_indicators=unique_iocs)
+def remove_non_indicators_from_pulse(pulse_id, threshold):
     
-    #TODO: publish mode should also check for unique_indicators
-    if publish:
-        public = False
+    print("Getting pulse indicators for pulse {pulse_id}".format(pulse_id=pulse_id))
+    indicators = otx.get_pulse_indicators(pulse_id)
 
-        pulse_name = click.prompt("Enter the name for the new OTX pulse")
-        tags = click.prompt("Enter tags separated by commas (leave empty for none)")
+    for possible_indicator in indicators:
+        indicator = possible_indicator.get("indicator")
+        indicator_type = possible_indicator.get("type")
 
-        if tags:
-            tags = tags.split(",")
-        elif not tags:
-            tags = []
+        for supported_type in IndicatorTypes.all_types:
+            if possible_indicator.get("type") == supported_type.name:
+                indicator_type = supported_type
+                break
 
-        if click.confirm("Make the pulse public?"):
-            public = True
+        full_details = otx.get_indicator_details_full(indicator_type, indicator)
 
-        if click.confirm("About to create a new pulse. Launch the missiles?"):
-            print("Uploading IOCs to OTX!")
-            response = otx.create_pulse(
-                name=pulse_name,
-                public=public,
-                indicators=indicators,
-                tags=tags,
-                references=[],
-            )
+        related_pulse_count = full_details.get("general").get("pulse_info").get("count")
+        related_pulses = full_details.get("general").get("pulse_info").get("pulses")
+        indicator_id = full_details.get("general").get("base_indicator").get("id")
+        
+        if related_pulse_count - 1 > cutoff:
+            otx.remove_pulse_indicators(pulse_id, [indicator_id])
+            print("Removed indicator {indicator} (ID #{indicator_id}) that was present in {related_pulse_count} other pulses.".format(indicator=indicator, indicator_id=indicator_id, related_pulse_count=related_pulse_count))
+        else:
+            print("Did not delete {indicator} (ID #{indicator_id}), it was only present in {related_pulse_count} pulses.".format(indicator=indicator, indicator_id=indicator_id, related_pulse_count=related_pulse_count))
 
-    with open(out, "w") as f:
-        print("Writing all IOCS to plaintext.")
-        f.write("\n".join([result.get("indicator") for result in results]))
+def guess_indicator_type(indicator: str) -> IndicatorTypes.IndicatorTypes:
+    try:
+        ipaddress.ip_address(item.split("://")[-1])
+    except ValueError
+        pass
+    
 
-def get_indicator(indicator, indicator_type):
+def extract_indicators(data: Union[io.TextIOBase, str]):
+    
+    if isinstance(data, str):
+        raw = data.split()
+    elif isinstance(data, io.TextIOBase):
+        raw = [item for line in data for item in line.split()]
+
+    for item in raw:
+
+
+    print(raw) 
+
+    return data
+
+def get_otx_indicator(indicator, indicator_type):
+    indicators = []
+    seen = []
+    urls = []
+    domains = []
 
     print(f"Getting OTX results for {indicator}")
     results = otx.get_indicator_details_full(indicator_types_lookup.get(indicator_type), indicator)
@@ -121,7 +126,3 @@ def get_unique_indicators(results):
             unique_indicators.append({"indicator": indicator, "type": indicator_type})
 
     return unique_indicators
-
-
-if __name__ == "__main__":
-    main()
